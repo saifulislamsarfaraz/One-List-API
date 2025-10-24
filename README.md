@@ -4,17 +4,31 @@ A conversational interface for managing your to-do list using the One List API. 
 
 ## Version
 
-1.0.0
+2.0.0
+
+## Project Structure
+
+```
+├── .gitignore
+├── README.md
+├── requirements.txt
+├── backend/
+│   └── main.py
+├── frontend/
+│   └── app.py
+├── src/
+│   ├── nlp_logic.py
+│   └── streamlit_app.py
+```
 
 ## Technologies Used
 
 *   **Python:** The core programming language for the project.
 *   **FastAPI:** A modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints. Used for the backend.
 *   **Streamlit:** An open-source app framework for Machine Learning and Data Science teams. Used for the interactive frontend UI.
+*   **Uvicorn:** A lightning-fast ASGI server, used to run the FastAPI application.
 *   **Requests:** An elegant and simple HTTP library for Python, used for making API calls to the One List API.
 *   **python-dotenv:** A Python library for getting and setting environment variables from a `.env` file.
-*   **Pydantic:** Data validation and settings management using Python type hints. Used in FastAPI for request and response models.
-*   **Uvicorn:** A lightning-fast ASGI server, used to run the FastAPI application.
 
 ## Features
 
@@ -63,7 +77,11 @@ A conversational interface for managing your to-do list using the One List API. 
 
 ## Usage
 
-To run the application, you need to start both the backend and frontend servers in separate terminals.
+There are two ways to run this application:
+
+### Method 1: Separate Frontend and Backend
+
+This method is suitable for local development and testing.
 
 1.  **Start the backend server:**
     ```bash
@@ -76,6 +94,21 @@ To run the application, you need to start both the backend and frontend servers 
     streamlit run frontend/app.py
     ```
     The frontend will open in your web browser.
+
+### Method 2: Streamlit Cloud Deployment
+
+This method uses the `src` directory and is optimized for deployment on Streamlit Cloud.
+
+```bash
+streamlit run src/streamlit_app.py
+```
+
+The application will open in your web browser.
+
+## Notes
+
+*   The `backend` and `frontend` directories provide a traditional separation of concerns, which can be useful for development and testing. The `backend` is a FastAPI application, and the `frontend` is a Streamlit application that communicates with the backend.
+*   The `src` directory contains a self-contained Streamlit application that includes the NLP logic. This is the recommended structure for deploying to Streamlit Cloud, as it simplifies the deployment process.
 
 ## Example Usage
 
