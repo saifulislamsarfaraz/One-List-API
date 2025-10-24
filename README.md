@@ -118,9 +118,21 @@ Here's an example of a conversation with the To-Do Chat Assistant:
 **User:** Add a new task to finish the project report.
 **System:** ✓ Task created: "finish the project report"
 
+
 **User:** What are my incomplete tasks?
 **System:** You have 1 incomplete task(s):
 1. ○ finish the project report
 
 **User:** Mark "finish the project report" as done.
 **System:** ✓ Task marked as complete!
+
+## 🧠 Dev Branch: One List API Chatbot (Sentence Transformer Integration)
+
+This branch focuses on developing a conversational interface for the One List API using Sentence Transformers for intent detection.
+
+### 🤝 Contributing
+If you'd like to contribute:
+1. Fork this repository  
+2. Create a new branch for your feature or fix  
+3. Submit a pull request for review  
+
