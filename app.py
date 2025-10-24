@@ -25,7 +25,7 @@ fastapi_app.add_middleware(
 
 # Configuration
 API_BASE_URL = "https://one-list-api.herokuapp.com"
-ACCESS_TOKEN = os.getenv("ACCESS_TOKEN", "")
+ACCESS_TOKEN = os.getenv("ACCESS_TOKEN", "illustriousvoyage")
 
 class ChatRequest(BaseModel):
     message: str
