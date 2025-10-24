@@ -4,7 +4,7 @@ A conversational interface for managing your to-do list using the One List API. 
 
 ## Version
 
-2.0.0
+1.0.0
 
 ## Project Structure
 
