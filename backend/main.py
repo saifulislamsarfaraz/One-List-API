@@ -6,6 +6,7 @@ import re
 from typing import Optional, List, Dict
 import os
 from dotenv import load_dotenv
+from sentence_transformers import SentenceTransformer, util
 app = FastAPI()
 
 # CORS middleware for Streamlit
@@ -30,41 +31,50 @@ class ChatResponse(BaseModel):
     intent: str
     success: bool
 
-# Intent identification patterns
-INTENT_PATTERNS = {
+model = SentenceTransformer("all-MiniLM-L6-v2")
+
+# Intent examples
+intents = {
     "add_task": [
-        r"add\s+(?:a\s+)?(?:new\s+)?task\s+(?:to\s+)?(.+)",
-        r"create\s+(?:a\s+)?(?:new\s+)?task\s+(?:to\s+)?(.+)",
-        r"new\s+task[:\s]+(.+)",
-        r"remind\s+me\s+to\s+(.+)",
+        "add a new task",
+        "create a task",
+        "remind me to do something",
+        "note this down",
     ],
     "list_tasks": [
-        r"(?:show|list|view|display|get)\s+(?:all\s+)?(?:my\s+)?tasks?",
-        r"what\s+(?:are\s+)?(?:my\s+)?tasks?",
-        r"show\s+me\s+(?:my\s+)?(?:all\s+)?tasks?",
-    ],
-    "list_incomplete": [
-        r"(?:show|list|view|what)\s+.*(?:incomplete|pending|unfinished|undone)",
-        r"(?:incomplete|pending|unfinished|undone)\s+tasks?",
-    ],
-    "list_complete": [
-        r"(?:show|list|view|what)\s+.*(?:complete|completed|done|finished)",
-        r"(?:complete|completed|done|finished)\s+tasks?",
-    ],
-    "view_task": [
-        r"(?:show|view|display|get)\s+task\s+(?:number\s+)?(\d+)",
-        r"task\s+(?:number\s+)?(\d+)",
-    ],
-    "complete_task": [
-        r"(?:mark|set|complete|finish)\s+(?:task\s+)?['\"]?(.+?)['\"]?\s+(?:as\s+)?(?:done|complete|completed|finished)",
-        r"(?:done|complete|finish)\s+(?:task\s+)?['\"]?(.+?)['\"]?",
-        r"complete\s+task\s+(\d+)",
+        "show my tasks",
+        "list all tasks",
+        "what tasks do I have",
     ],
     "delete_task": [
-        r"delete\s+(?:task\s+)?['\"]?(.+?)['\"]?",
-        r"remove\s+(?:task\s+)?['\"]?(.+?)['\"]?",
-    ],
+        "delete a task",
+        "remove this task",
+        "erase my task",
+    ]
 }
+
+# Precompute embeddings for intent examples
+intent_embeddings = {
+    intent: model.encode(samples, convert_to_tensor=True)
+    for intent, samples in intents.items()
+}
+
+def detect_intent(user_input):
+    user_emb = model.encode(user_input, convert_to_tensor=True)
+    best_intent, best_score = None, 0
+
+    for intent, examples_emb in intent_embeddings.items():
+        score = util.cos_sim(user_emb, examples_emb).max().item()
+        if score > best_score:
+            best_intent, best_score = intent, score
+
+    return best_intent, best_score
+
+# Example
+query = ""
+intent, score = detect_intent(query)
+print(intent, score)
+
 
 def identify_intent(message: str) -> tuple:
     """Identify intent and extract parameters from user message"""
