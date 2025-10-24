@@ -1,6 +1,7 @@
 # To-Do Chat Assistant
 
 A conversational interface for managing your to-do list using the One List API. This application allows you to interact with your to-do list using natural language.
+<img width="1898" height="861" alt="image" src="https://github.com/user-attachments/assets/a2f03330-f9e3-421d-828d-52dafdc47a9b" />
 
 ## Version
 
